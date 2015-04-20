@@ -1,12 +1,10 @@
-#NEVIL: Nurturing and EVolution of Intelligence and Learning [![Build Status](https://travis-ci.org/ou-real/nevil-base.svg?branch=master)](https://travis-ci.org/ou-real/nevil-base)
-This the base project for NEVIL light-switch based nurturing experiments. This project provides libraries and base classes for different experiments to be build upon.
+#NEVIL: Grandparent [![Build Status](https://travis-ci.org/ou-real/nevil-grandparent.svg)](https://travis-ci.org/ou-real/nevil-grandparent)
 
-This repository is meant to be forked and extended for different experiments.
 
 ##Usage
 You can clone this repository by running:
 ```bash
-git clone https://github.com/ou-real/nevil-base.git
+git clone https://github.com/ou-real/nevil-grandparent.git
 ```
 
 ###Compilation/Install
@@ -134,7 +132,7 @@ sudo apt-get install libqt4-core libqt4-dev libqt4-gui qt4-dev-tools
 sudo apt-get install freeglut3 freeglut3-dev
 ```
 ##Structure
-    nevil-base
+    nevil-grandparent
     ├── README.md                   - Description
     ├── .gitignore                  - Files ignore by Git
     ├── CMakeLists.txt              - Cmake file for this project
@@ -160,9 +158,9 @@ sudo apt-get install freeglut3 freeglut3-dev
         ├── util                    - Implementation files for utility modules
         └── *.cpp                   - Other implementation files specific to the project
 
-##[Potential Bugs](https://github.com/ou-real/nevil-base/issues)
+##[Potential Bugs](https://github.com/ou-real/nevil-grandparent/issues)
 
-##[To do](https://github.com/ou-real/nevil-base/milestones)
+##[To do](https://github.com/ou-real/nevil-grandparent/milestones)
 
 ##License
 [MIT license](http://opensource.org/licenses/MIT)

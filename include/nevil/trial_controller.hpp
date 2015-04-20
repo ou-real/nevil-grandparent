@@ -6,7 +6,7 @@
 #include <time.h>
 #include <enki/Types.h>
 
-#include "test_trial.hpp"
+#include "grandparent_trial.hpp"
 #include "util/logger.hpp"
 #include "util/parser.hpp"
 
@@ -31,7 +31,7 @@ namespace nevil
     void _evaluate();
     void _end();
 
-    nevil::test_trial *_trial;
+    nevil::grandparent_trial *_trial;
     nevil::logger _trial_logger;
     int _trial_id;
 

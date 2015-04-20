@@ -11,7 +11,7 @@ nevil::trial_controller::trial_controller(int id, unsigned seed, nevil::args &cl
   _population_size = 80;
   _max_generation_num = 200;
   _max_step_num = 1000;
-  std::string trial_name = "TestTrial";
+  std::string trial_name = "GrandparentTrial";
   float mutation_rate = 0.25;
   float bracket_ratio = 0.1;
 
@@ -74,7 +74,7 @@ nevil::trial_controller::trial_controller(int id, unsigned seed, nevil::args &cl
 
   // Instantiating a controller
   // If you have more than one controller you can use the controller name to instantiate the right one
-  _trial = new nevil::test_trial(cl_args);
+  _trial = new nevil::grandparent_trial(cl_args);
   #ifdef GUI
     _viewer = new nevil::view(_trial->get_trial_world());
     _viewer->show();
@@ -129,14 +129,18 @@ void nevil::trial_controller::_simulate()
 
 void nevil::trial_controller::_evaluate()
 {
+  std::string generation_info = _trial->get_generation_data();
   _trial->epoch();
-  _trial_logger << _current_generation << "\t" << _trial->get_best_individual().get_fitness() << std::endl;
+
+  _trial_logger << _current_generation << "\t" << _trial->get_best_individual().str() << std::endl;
+  _trial_logger << generation_info << std::endl;
 }
 
 void nevil::trial_controller::_end()
 {
   printf("-Trial %d: finished\n", _trial_id);
   _trial_logger << "==Trial Ended==" << std::endl;
-  _trial_logger << "Best chromosome " << _trial->get_best_individual().get_chromosome() << std::endl;
+  nevil::grandparent_individual best_individual = _trial->get_best_individual();
+  _trial_logger << _current_generation << "\t" << best_individual.str() << ":" << best_individual.get_chromosome() << std::endl;
   _trial_logger.close_file();
 }
