@@ -1,9 +1,10 @@
 #include "nevil/grandparent_robot.hpp"
 
-nevil::grandparent_robot::grandparent_robot(double x, double y, double angle, const std::string &robot_name, const Enki::Color &color)
-: robot(x, y, angle, robot_name, color)
+nevil::grandparent_robot::grandparent_robot(double x, double y, double angle, bool has_grandparent, const std::string &robot_name, const Enki::Color &color)
+  : robot(x, y, angle, robot_name, color)
+  , _has_grandparent(has_grandparent)
 {
-  _neural_network = nevil::basic_feedforward_nn(19, 2);
+  _neural_network = nevil::basic_feedforward_nn(_has_grandparent ? 22 : 21, 2);
 }
 
 nevil::grandparent_robot::~grandparent_robot() {}
@@ -20,17 +21,54 @@ bool nevil::grandparent_robot::update(const std::vector<object *> &objects)
   std::vector<double> inputs = _get_sensor_inputs();
 
   if (is_at_switch())
-    _individual->set_turn_on_light(true);
+  {
+    if (this->pos.y < (objects[0]->pos.y + 10))
+      _individual->set_turn_on_light_a(true);
+    else
+      _individual->set_turn_on_light_b(true);
+  }
 
   if (is_at_light())
-    _individual->increase_fitness(1);
-
-  // TODO Do stuff according to child, parent, grandparent
+  {
+    // If both switches are on add 2 fitness
+    if (objects[0]->is_on() && objects[1]->is_on())
+      _individual->increase_fitness(2);
+    // Else give 1 fitness because only one of the switches are on.
+    else
+      _individual->increase_fitness(1);
+  }
 
   // Add the bias input
   inputs.push_back(1);
+
+  if (_robot_name == "child")
+  {
+    inputs.push_back(1);
+    inputs.push_back(0);
+    if (_has_grandparent)
+      inputs.push_back(0);
+  }
+  else if (_robot_name == "parent")
+  {
+    inputs.push_back(0);
+    inputs.push_back(1);
+    if (_has_grandparent)
+      inputs.push_back(0);
+  }
+  else if (_robot_name == "grandparent")
+  {
+    inputs.push_back(0);
+    inputs.push_back(0);
+    inputs.push_back(1);
+  }
+
   // Evaluate the neural network
   std::vector <double> output = _neural_network.update(inputs);
+  if (_robot_name == "child")
+  {
+    output[0] /= 2;
+    output[1] /= 2;
+  }
   // Pass the output of each NN and convert it to motor velocities
   _set_wheels_speed(output);
   return true;

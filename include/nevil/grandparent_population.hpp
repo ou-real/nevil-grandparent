@@ -13,7 +13,7 @@ namespace nevil
   {
   public:
     grandparent_population();
-    grandparent_population(size_t pop_size, float bracket_ratio ,float mutation_rate);
+    grandparent_population(size_t pop_size, bool has_grandparent ,float bracket_ratio ,float mutation_rate);
     virtual ~grandparent_population();
 
     size_t size() const;

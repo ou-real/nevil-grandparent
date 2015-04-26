@@ -1,7 +1,7 @@
 {
   "tn": 1,
-  "sn": true,
-  "mg": 20,
+  "gp": false,
+  "mg": 200,
   "xn": "GrandparentTrial",
   "ms": 1000,
   "ps": 80

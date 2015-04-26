@@ -19,28 +19,21 @@ namespace nevil
     grandparent_individual* clone() const;
     void mutate(float rate);
     
-    const std::string &get_uuid() const;
-    const std::string &get_parent_uuid() const;
     std::string str() const;
     bool turn_on_light() const;
     bool gained_fitness() const;
     nevil::grandparent_individual &operator=(const nevil::grandparent_individual &rhs);
 
     void increase_fitness(int fitness);
-    void set_id(int id);
-    void set_turn_on_light(bool);
-    void set_gained_fitness(bool);
+    void set_turn_on_light_a (bool a);
+    void set_turn_on_light_b (bool b);
 
   protected:
     // Indicates whether this individual activated the switch in a given trial
-    bool _turned_on_light;
+    bool _turned_on_light_a;
+    bool _turned_on_light_b;
     // Indicates whether this individual gained fitness.
-    bool _gained_fitness;
-    // Unique identifier for each individual followed by A or B.
-    std::string _uuid;
-    // Parent's uuid.
-    std::string _parent_uuid;
-
+    int _gained_fitness;
   };
 }
 

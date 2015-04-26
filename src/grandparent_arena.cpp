@@ -1,7 +1,8 @@
 #include "nevil/grandparent_arena.hpp"
 
-nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y, const Enki::Color &arena_color)
+nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y, bool has_grandparent, const Enki::Color &arena_color)
  : nevil::arena(world_size_x, world_size_y, arena_color)
+ , _has_grandparent(has_grandparent)
 {
   // TODO: Setup your arena with objects
   const double OBJECT_SIZE_X = 6;
@@ -11,7 +12,7 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y, 
   const double MASS = -1;
 
   //switch A
-  _add_object(new nevil::switch_object(world_size_x / 2.0
+  _add_object(new nevil::switch_object(world_size_x * (5/ 8.0)
     , 0
     , OBJECT_SIZE_X
     , OBJECT_SIZE_Y
@@ -20,7 +21,7 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y, 
     , 1));
   
   //switch B
-  _add_object(new nevil::switch_object(world_size_x / 2.0
+  _add_object(new nevil::switch_object(world_size_x * (5/ 8.0)
     , world_size_y
     , OBJECT_SIZE_X
     , OBJECT_SIZE_Y
@@ -39,25 +40,31 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y, 
 
   //--robots--
   // Create a robot named child with 0 degree angle
-  _add_robot(new nevil::grandparent_robot(world_size_x / 2.0
+  _add_robot(new nevil::grandparent_robot(world_size_x / 4.0
     , world_size_y / 2.0
     , INITIAL_DEGREE
+    , _has_grandparent
     , "child"
     , Enki::Color(0.0, 0.0, 0.5)));
 
   // Create a robot named parent with 0 degree angle
-  _add_robot(new nevil::grandparent_robot(world_size_x * (2 / 3.0)
+  _add_robot(new nevil::grandparent_robot(world_size_x / 2.0
     , world_size_y / 2.0
     , INITIAL_DEGREE
+    , _has_grandparent
     , "parent"
     , Enki::Color(0.0, 0.5, 0.0)));
 
   // Create a robot named grandparent with 0 degree angle
-  _add_robot(new nevil::grandparent_robot(world_size_x * (5 / 6.0)
-    , world_size_y / 2.0
-    , INITIAL_DEGREE
-    , "grandparent"
-    , Enki::Color(0.5, 0.0, 0.0)));
+  if (_has_grandparent)
+  {
+    _add_robot(new nevil::grandparent_robot(world_size_x * (3 / 4.0)
+      , world_size_y / 2.0
+      , INITIAL_DEGREE
+      , _has_grandparent
+      , "grandparent"
+      , Enki::Color(0.5, 0.0, 0.0)));
+  }
 }
 
 nevil::grandparent_arena::~grandparent_arena() {}
@@ -68,23 +75,26 @@ void nevil::grandparent_arena::set_individuals(nevil::grandparent_individual *ch
 {
   _robot_vector[0]->set_individual(child);
   _robot_vector[1]->set_individual(parent);
-  _robot_vector[2]->set_individual(grandparent);
+  if (_has_grandparent)
+    _robot_vector[2]->set_individual(grandparent);
 }
 
 bool nevil::grandparent_arena::update()
 {
-  //TODO change this 
-
   // Updating the environment
   for (auto r : _robot_vector)
   {
     // Turning the switches and lights on based on the position of the robots
     if(r->is_at_switch())
     {
-      // Turn on everything
-      for (auto o : _object_vector)
-        o->turn_on();
-      break; // Don't need to check the other robots
+      // If the robot is at the left switch
+      if (r->pos.y < _trial_world->w/2)
+        _object_vector[0]->turn_on();
+      // The robot is at the right switch
+      else
+        _object_vector[1]->turn_on();
+      // Turn on the light
+      _object_vector[2]->turn_on();
     }
   }
 
@@ -93,63 +103,3 @@ bool nevil::grandparent_arena::update()
     r->update(_object_vector);
   return true;
 }
-
-
-  // // Updating the objects
-  // bool is_on_switch_a, is_on_switch_b, is_on_light;
-  // bool switch_a_active, switch_b_active;
-  // _robot_vector[0]->evaluate_position(is_on_switch_a, is_on_switch_b, is_on_light);
-  // _robot_vector[1]->evaluate_position(is_on_switch_a, is_on_switch_b, is_on_light);
-  // _robot_vector[2]->evaluate_position(is_on_switch_a, is_on_switch_b, is_on_light);
-
-  // // Turning the switches and lights on based on the position of the robots
-  // if(is_on_switch_a)
-  // {
-  //   // Notify system that switch A has been turned on
-  //   switch_a_active = true;
-
-  //   // Change the color of the switchA to ON
-  //   _object_vector[0]->turn_on();
-  //   // Change the color of the lightA to ON
-  //   _object_vector[2]->turn_on();
-
-  //   // are these strictly necessary for grandparent simulation?
-  //   //if so, let's make them 100% v. 50% success maybe
-  //   //if not, we can just use fitness values
-  //   pop[index]->setTurnOnLight(true);
-  //   pop[index + pop.size()/3]->setTurnOnLight(true);
-  //   pop[index + pop.size()*(2/3)]->setTurnOnLight(true);
-  // }
-
-  // if(is_on_switch_b)
-  // {
-  //   // Notify system that switch B has been turned on
-  //   switch_b_active = true;
-
-  //   // Change the color of the switchA to ON
-  //   _object_vector[1]->turn_on();
-  //   // Change the color of the lightA to ON
-  //   _object_vector[2]->turn_on();
-
-  //   // are these strictly necessary for grandparent simulation?
-  //   //if so, let's make them 100% v. 50% success maybe
-  //   //if not, we can just use fitness values
-  //   pop[index]->setTurnOnLight(true);
-  //   pop[index + pop.size()/3]->setTurnOnLight(true);
-  //   pop[index + pop.size()*(2/3)]->setTurnOnLight(true);
-  // }
-
-
-  // if (is_on_light && switch_a_active && switch_b_active) 
-  // {
-  //   pop[index]->increase_fitness(1);
-  //   pop[index]->setGainedFitness(true);
-  // } else if (is_on_light && switch_a_active)
-  // {
-  //   pop[index]->increase_fitness(0.5);
-  //   pop[index]->setGainedFitness(true);
-  // } else if (is_on_light && switch_b_active)
-  // {
-  //   pop[index]->increase_fitness(0.5);
-  //   pop[index]->setGainedFitness(true);
-  // }

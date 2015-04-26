@@ -12,6 +12,7 @@ nevil::trial_controller::trial_controller(int id, unsigned seed, nevil::args &cl
   _max_generation_num = 200;
   _max_step_num = 1000;
   std::string trial_name = "GrandparentTrial";
+  bool has_grandparent = false;
   float mutation_rate = 0.25;
   float bracket_ratio = 0.1;
 
@@ -26,6 +27,11 @@ nevil::trial_controller::trial_controller(int id, unsigned seed, nevil::args &cl
 
   if ((it = cl_args.find("ms")) != cl_args.end())
     _max_step_num = stoi(it->second);
+
+  if ((it = cl_args.find("gp")) != cl_args.end())
+    has_grandparent = (it->second == "true");
+  else
+    cl_args["gp"] = (has_grandparent ? "true":"false");
 
   if ((it = cl_args.find("ps")) != cl_args.end())
     _population_size = stoi(it->second);
@@ -67,6 +73,7 @@ nevil::trial_controller::trial_controller(int id, unsigned seed, nevil::args &cl
   _trial_logger << "-Number of timesteps: " << _max_step_num << std::endl;
   _trial_logger << "==Trial config==" << std::endl;
   _trial_logger << "-Name: " << trial_name << std::endl;
+  _trial_logger << "-Has Grandparent: " << (has_grandparent ? "true":"false") << std::endl;
   _trial_logger << "-Population size: " << _population_size << std::endl;
   _trial_logger << "-Bracket Ratio: " << bracket_ratio << " (" << (_population_size * bracket_ratio) << ")" << std::endl;
   _trial_logger << "-Mutation Rate: " << mutation_rate << std::endl;
@@ -114,7 +121,7 @@ void nevil::trial_controller::_simulate()
     for (int current_step = 0; current_step < _max_step_num; ++current_step)
     {
       #ifdef GUI
-        if(_frame_number == 10)
+        if(_frame_number == 25)
         {
           _viewer->update();
           _frame_number = -1;
