@@ -64,11 +64,11 @@ bool nevil::grandparent_robot::update(const std::vector<object *> &objects)
 
   // Evaluate the neural network
   std::vector <double> output = _neural_network.update(inputs);
-  if (_robot_name == "child")
-  {
-    output[0] /= 2;
-    output[1] /= 2;
-  }
+  // if (_robot_name == "child")
+  // {
+  //   output[0] /= 2;
+  //   output[1] /= 2;
+  // }
   // Pass the output of each NN and convert it to motor velocities
   _set_wheels_speed(output);
   return true;

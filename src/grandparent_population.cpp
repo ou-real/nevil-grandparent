@@ -58,7 +58,7 @@ nevil::grandparent_individual nevil::grandparent_population::next_generation()
 
     // Make the children to be the parents
     delete _individual_list[i + _population_size];
-    _individual_list[i + _population_size] = _individual_list[i]->clone();
+    _individual_list[i + _population_size] = selected_individuals[i]->clone();
 
     // Cloning and mutating the parent for getting the new children
     delete _individual_list[i];

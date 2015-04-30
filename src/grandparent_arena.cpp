@@ -48,12 +48,12 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y, 
     , Enki::Color(0.0, 0.0, 0.5)));
 
   // Create a robot named parent with 0 degree angle
-  _add_robot(new nevil::grandparent_robot(world_size_x / 2.0
-    , world_size_y / 2.0
-    , INITIAL_DEGREE
-    , _has_grandparent
-    , "parent"
-    , Enki::Color(0.0, 0.5, 0.0)));
+  // _add_robot(new nevil::grandparent_robot(world_size_x / 2.0
+  //   , world_size_y / 2.0
+  //   , INITIAL_DEGREE
+  //   , _has_grandparent
+  //   , "parent"
+  //   , Enki::Color(0.0, 0.5, 0.0)));
 
   // Create a robot named grandparent with 0 degree angle
   if (_has_grandparent)
@@ -74,7 +74,7 @@ void nevil::grandparent_arena::set_individuals(nevil::grandparent_individual *ch
   , nevil::grandparent_individual *grandparent)
 {
   _robot_vector[0]->set_individual(child);
-  _robot_vector[1]->set_individual(parent);
+  // _robot_vector[1]->set_individual(parent);
   if (_has_grandparent)
     _robot_vector[2]->set_individual(grandparent);
 }
