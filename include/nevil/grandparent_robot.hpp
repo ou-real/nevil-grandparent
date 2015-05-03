@@ -11,7 +11,7 @@ namespace nevil
   class grandparent_robot : public robot
   {
   public:
-    grandparent_robot(double x, double y, double angle, bool has_grandparent, const std::string &robot_name, const Enki::Color &color);
+    grandparent_robot(double x, double y, double angle, bool has_parent, bool has_grandparent, const std::string &robot_name, const Enki::Color &color);
     virtual ~grandparent_robot();
 
     bool update(const std::vector<object *> &objects);
@@ -19,6 +19,7 @@ namespace nevil
 
   protected:
     bool _has_grandparent;
+    bool _has_parent;
     nevil::grandparent_individual *_individual;
     nevil::basic_feedforward_nn _neural_network;
   };

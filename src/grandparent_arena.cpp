@@ -1,10 +1,10 @@
 #include "nevil/grandparent_arena.hpp"
 
-nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y, bool has_grandparent, const Enki::Color &arena_color)
+nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,bool has_parent, bool has_grandparent, const Enki::Color &arena_color)
  : nevil::arena(world_size_x, world_size_y, arena_color)
+ , _has_parent(has_parent)
  , _has_grandparent(has_grandparent)
 {
-  // TODO: Setup your arena with objects
   const double OBJECT_SIZE_X = 6;
   const double OBJECT_SIZE_Y = 0.1;
   const double OBJECT_HEIGHT = 7;
@@ -43,17 +43,22 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y, 
   _add_robot(new nevil::grandparent_robot(world_size_x / 4.0
     , world_size_y / 2.0
     , INITIAL_DEGREE
+    , _has_parent
     , _has_grandparent
     , "child"
     , Enki::Color(0.0, 0.0, 0.5)));
 
   // Create a robot named parent with 0 degree angle
-  _add_robot(new nevil::grandparent_robot(world_size_x / 2.0
-    , world_size_y / 2.0
-    , INITIAL_DEGREE
-    , _has_grandparent
-    , "parent"
-    , Enki::Color(0.0, 0.5, 0.0)));
+  if (_has_parent)
+  {
+    _add_robot(new nevil::grandparent_robot(world_size_x / 2.0
+      , world_size_y / 2.0
+      , INITIAL_DEGREE
+      , _has_parent
+      , _has_grandparent
+      , "parent"
+      , Enki::Color(0.0, 0.5, 0.0)));
+  }
 
   // Create a robot named grandparent with 0 degree angle
   if (_has_grandparent)
@@ -61,6 +66,7 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y, 
     _add_robot(new nevil::grandparent_robot(world_size_x * (3 / 4.0)
       , world_size_y / 2.0
       , INITIAL_DEGREE
+      , _has_parent
       , _has_grandparent
       , "grandparent"
       , Enki::Color(0.5, 0.0, 0.0)));
@@ -74,7 +80,8 @@ void nevil::grandparent_arena::set_individuals(nevil::grandparent_individual *ch
   , nevil::grandparent_individual *grandparent)
 {
   _robot_vector[0]->set_individual(child);
-  _robot_vector[1]->set_individual(parent);
+  if (_has_parent)
+    _robot_vector[1]->set_individual(parent);
   if (_has_grandparent)
     _robot_vector[2]->set_individual(grandparent);
 }

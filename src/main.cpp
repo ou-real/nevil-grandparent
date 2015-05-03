@@ -79,7 +79,6 @@ void set_output_path(nevil::args &cl_args)
     cl_args["xp_path"] = os::append_path(cl_args["output"], os::get_time_name_dir());
 
   // Creating the trial path directory
-  std::cout << cl_args["xp_path"] << std::endl;
   os::create_directory(cl_args["xp_path"]);
 }
 

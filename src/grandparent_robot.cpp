@@ -1,10 +1,14 @@
 #include "nevil/grandparent_robot.hpp"
 
-nevil::grandparent_robot::grandparent_robot(double x, double y, double angle, bool has_grandparent, const std::string &robot_name, const Enki::Color &color)
+nevil::grandparent_robot::grandparent_robot(double x, double y, double angle, bool has_parent, bool has_grandparent, const std::string &robot_name, const Enki::Color &color)
   : robot(x, y, angle, robot_name, color)
+  , _has_parent(has_parent)
   , _has_grandparent(has_grandparent)
 {
-  _neural_network = nevil::basic_feedforward_nn(_has_grandparent ? 22 : 21, 2);
+  // Need 19 inputs for self-care
+  // To assign roles of parent-child we need two more neurons
+  // To assign grandparent we need 3 more neurons
+  _neural_network = nevil::basic_feedforward_nn(19 + (2 * _has_parent) + _has_grandparent, 2);
 }
 
 nevil::grandparent_robot::~grandparent_robot() {}
@@ -43,8 +47,11 @@ bool nevil::grandparent_robot::update(const std::vector<object *> &objects)
 
   if (_robot_name == "child")
   {
-    inputs.push_back(1);
-    inputs.push_back(0);
+    if (_has_parent)
+    {
+      inputs.push_back(1);
+      inputs.push_back(0);
+    }
     if (_has_grandparent)
       inputs.push_back(0);
   }

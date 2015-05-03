@@ -12,9 +12,10 @@ nevil::grandparent_trial::grandparent_trial(nevil::args &cl_args)
   float bracket_ratio = std::stof(cl_args["br"]);
   float mutation_rate = std::stof(cl_args["mr"]);
   bool has_grandparent = (cl_args["gp"] == "true");
+  bool has_parent = (cl_args["pr"] == "true");
 
-  _trial_arena = new nevil::grandparent_arena(WORLD_SIZE_X, WORLD_SIZE_Y, has_grandparent);
-  _population = nevil::grandparent_population(_population_size, has_grandparent, bracket_ratio, mutation_rate);
+  _trial_arena = new nevil::grandparent_arena(WORLD_SIZE_X, WORLD_SIZE_Y, has_parent ,has_grandparent);
+  _population = nevil::grandparent_population(_population_size, has_parent, has_grandparent, bracket_ratio, mutation_rate);
   _current_index = 0;
 }
 
