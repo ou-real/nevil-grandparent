@@ -5,8 +5,8 @@ nevil::grandparent_trial::grandparent_trial() {}
 
 nevil::grandparent_trial::grandparent_trial(nevil::args &cl_args)
 {
-  const int WORLD_SIZE_X = 120;
-  const int WORLD_SIZE_Y = 70;
+  const int WORLD_SIZE_X = 70;
+  const int WORLD_SIZE_Y = 50;
 
   _population_size = std::stoi(cl_args["ps"]);
   float bracket_ratio = std::stof(cl_args["br"]);
