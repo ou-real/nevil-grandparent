@@ -26,9 +26,9 @@ bool nevil::grandparent_robot::update(const std::vector<object *> &objects)
 
   if (is_at_switch())
   {
-    if (this->pos.y < (objects[0]->pos.y + 10))
+    if (this->pos.y < (objects[0]->pos.y + 10) && !objects[0]->is_on())
       _individual->set_turn_on_light_a(true);
-    else
+    else if (!objects[1]->is_on())
       _individual->set_turn_on_light_b(true);
   }
 
