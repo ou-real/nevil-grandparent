@@ -14,44 +14,34 @@ nevil::grandparent_trial::grandparent_trial(nevil::args &cl_args)
   bool has_grandparent = (cl_args["gp"] == "true");
   bool has_parent = (cl_args["pr"] == "true");
 
-  _trial_arena = new nevil::grandparent_arena(WORLD_SIZE_X, WORLD_SIZE_Y, has_parent ,has_grandparent);
+  _arena = nevil::grandparent_arena(WORLD_SIZE_X, WORLD_SIZE_Y, has_parent, has_grandparent);
   _population = nevil::grandparent_population(_population_size, has_parent, has_grandparent, bracket_ratio, mutation_rate);
   _current_index = 0;
 }
 
-nevil::grandparent_trial::~grandparent_trial() 
+Enki::World *nevil::grandparent_trial::get_world() const
 {
-  delete _trial_arena;
-}
-
-Enki::World *nevil::grandparent_trial::get_trial_world()
-{
-  return _trial_arena->get_world();
+  return _arena.get_world();
 }
 
 bool nevil::grandparent_trial::update()
 {
-  _trial_arena->tick();
-  _trial_arena->update();
-  return true;
+  return _arena.update();
 }
 
 bool nevil::grandparent_trial::reset()
 {
-  _trial_arena->reset();
-  // 
-  _trial_arena->set_individuals(_population[_current_index]
+  _arena.set_individuals(_population[_current_index]
     , _population[_current_index + _population_size]
     , _population[_current_index + (2 * _population_size)]);
   ++_current_index;
-  return true;
+  return _arena.reset();;
 }
 
 bool nevil::grandparent_trial::epoch()
 {
   _best_individual = _population.next_generation();
   _current_index = 0;
-
   return true;
 }
 
@@ -60,11 +50,11 @@ nevil::grandparent_individual nevil::grandparent_trial::get_best_individual() co
   return _best_individual;
 }
 
-std::string nevil::grandparent_trial::get_generation_data()
+Json::Value nevil::grandparent_trial::get_generation_data()
 {
-  std::string generation_info;
-  for (int i = 0; i < _population.size() - 1; ++i)
-    generation_info = generation_info + _population[i]->str() + ", ";
+  Json::Value generation_info (Json::arrayValue);
+  for (int i = 0; i < _population_size; ++i)
+    generation_info.append(_population[i]->json());
 
-  return generation_info + _population[_population.size() - 1]->str();
+  return generation_info;
 }

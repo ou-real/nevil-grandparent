@@ -1,7 +1,11 @@
 #include "nevil/grandparent_arena.hpp"
 
-nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,bool has_parent, bool has_grandparent, const Enki::Color &arena_color)
- : nevil::arena(world_size_x, world_size_y, arena_color)
+nevil::grandparent_arena::grandparent_arena()
+  : nevil::arena()
+{}
+
+nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,bool has_parent, bool has_grandparent)
+ : nevil::arena(world_size_x, world_size_y)
  , _has_parent(has_parent)
  , _has_grandparent(has_grandparent)
 {
@@ -9,34 +13,27 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
   const double OBJECT_SIZE_Y = 0.1;
   const double OBJECT_HEIGHT = 7;
   const double INITIAL_DEGREE = 0;
-  const double MASS = -1;
 
   //switch A
   _add_object(new nevil::switch_object(world_size_x * (5/ 8.0)
     , 0
     , OBJECT_SIZE_X
     , OBJECT_SIZE_Y
-    , OBJECT_HEIGHT
-    , MASS
-    , 1));
+    , OBJECT_HEIGHT));
   
   //switch B
   _add_object(new nevil::switch_object(world_size_x * (5/ 8.0)
     , world_size_y
     , OBJECT_SIZE_X
     , OBJECT_SIZE_Y
-    , OBJECT_HEIGHT
-    , MASS
-    , 1));
+    , OBJECT_HEIGHT));
   
   //light
   _add_object(new nevil::light(0
     , world_size_y / 2.0
     , OBJECT_SIZE_Y
     , OBJECT_SIZE_X
-    , OBJECT_HEIGHT
-    , MASS
-    , 0.01));
+    , OBJECT_HEIGHT));
 
   //--robots--
   // Create a robot named child with 0 degree angle
@@ -73,8 +70,6 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
   }
 }
 
-nevil::grandparent_arena::~grandparent_arena() {}
-
 void nevil::grandparent_arena::set_individuals(nevil::grandparent_individual *child
   , nevil::grandparent_individual *parent
   , nevil::grandparent_individual *grandparent)
@@ -88,6 +83,7 @@ void nevil::grandparent_arena::set_individuals(nevil::grandparent_individual *ch
 
 bool nevil::grandparent_arena::update()
 {
+  nevil::arena::update();
   // Updating the environment
   for (auto r : _robot_vector)
   {
@@ -95,7 +91,7 @@ bool nevil::grandparent_arena::update()
     if(r->is_at_switch())
     {
       // If the robot is at the left switch
-      if (r->pos.y < _trial_world->w/2)
+      if (r->pos.y < _world->w/2)
         _object_vector[0]->turn_on();
       // The robot is at the right switch
       else

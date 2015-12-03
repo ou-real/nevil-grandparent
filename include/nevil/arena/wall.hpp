@@ -7,15 +7,11 @@ namespace nevil
 {
   class wall : public object
   {
-  public:
+   public:
     wall();
-    wall(int x, int y, double size_x, double size_y, double height, double mass = -1);
-    virtual ~wall();
-    void turn_on();
-    void turn_off();
-
-    static const Enki::Color COLOR;
+    wall(int x, int y, double size_x, double size_y, double height
+      , const Enki::Color &color = Enki::Color(0.9, 0.9, 0.9));
   };
 }
 
-#endif // _NEVIL_ARENA_WALL_HPP_
+#endif  // _NEVIL_ARENA_WALL_HPP_

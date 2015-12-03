@@ -42,7 +42,7 @@ std::string nevil::os::get_time_name_dir()
   std::string time_dir_name = 
     std::to_string(now.tm_mon + 1)+ "-" 
   + std::to_string(now.tm_mday) + "-"
-  + std::to_string(now.tm_year + 1900) + " "
+  + std::to_string(now.tm_year + 1900) + "_"
   + std::to_string(now.tm_hour) + "-"
   + std::to_string(now.tm_min) + "-"
   + std::to_string(now.tm_sec);
@@ -61,7 +61,7 @@ std::string nevil::os::get_working_dir()
   if (!get_current_dir(current_path, FILENAME_MAX))
   {
     std::cerr << "Could not get the working directory" << std::endl;
-    exit(-1);
+    std::abort();
   }
   return std::string(current_path);
 }

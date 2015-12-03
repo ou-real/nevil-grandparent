@@ -5,14 +5,12 @@
 #include <string>
 #include <time.h>
 #include <enki/Types.h>
+#include <json/json.h>
 
 #include "grandparent_trial.hpp"
 #include "util/logger.hpp"
+#include "util/json_logger.hpp"
 #include "util/parser.hpp"
-
-#ifdef GUI
-  #include "nevil/gui/view.hpp"
-#endif
 
 namespace nevil
 {
@@ -20,30 +18,28 @@ namespace nevil
   {
   public:
     trial_controller();
-    trial_controller(int id, unsigned seed, args&);
-    ~trial_controller();
+    trial_controller(int id, unsigned seed, const nevil::args &cl_args);
 
-    void run();
-    Enki::World *get_trial_world();
+    bool run();
+    Enki::World *get_world() const;
 
   protected:
     void _simulate();
     void _evaluate();
     void _end();
 
-    nevil::grandparent_trial *_trial;
-    nevil::logger _trial_logger;
+    nevil::grandparent_trial _trial;
+    nevil::json_logger _trial_json_logger;
+    Json::Value _root;
+    Json::Value _generational_data;
     int _trial_id;
-
-    #ifdef GUI
-      view *_viewer;
-    #endif
-
     //simulation variables
     int _max_step_num;
     int _population_size;
     int _max_generation_num;
     int _current_generation;
+    int _current_individual;
+    int _current_step;
   };
 }
 

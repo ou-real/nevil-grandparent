@@ -13,11 +13,10 @@ endif(DEBUG)
 
 if(O)
   MESSAGE("Enabling Optimization")
-  add_definitions(-O3)
-  add_definitions(-DNDEBUG)
+  add_definitions(-O3 -DNDEBUG)
 endif(O)
 
-add_definitions(-std=c++0x)
+add_definitions(-std=c++11 -Wall)
 
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)

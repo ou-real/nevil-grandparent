@@ -1,9 +1,10 @@
 #ifndef _NAME_GRANDPARENT_INDIVIDUAL_HPP_
 #define _NAME_GRANDPARENT_INDIVIDUAL_HPP_
 
+#include <json/json.h>
+
 #include "individual.hpp"
 #include "nevil/util/random.hpp"
-#include <string>
 
 namespace nevil
 {
@@ -13,18 +14,15 @@ namespace nevil
     grandparent_individual();
     grandparent_individual(size_t chromo_size);
     grandparent_individual(const std::vector<double> &chromosome);
-    grandparent_individual(const grandparent_individual &rhs);
-    virtual ~grandparent_individual();
 
     grandparent_individual* clone() const;
-    void mutate(float rate);
+    void mutate(double rate);
+    Json::Value json() const;
     
-    std::string str() const;
     bool turn_on_light() const;
     bool gained_fitness() const;
-    nevil::grandparent_individual &operator=(const nevil::grandparent_individual &rhs);
 
-    void increase_fitness(int fitness);
+    void increase_fitness(double fitness);
     void set_turn_on_light_a (bool a);
     void set_turn_on_light_b (bool b);
 
@@ -33,7 +31,7 @@ namespace nevil
     bool _turned_on_light_a;
     bool _turned_on_light_b;
     // Indicates whether this individual gained fitness.
-    int _gained_fitness;
+    double _light_power;
   };
 }
 

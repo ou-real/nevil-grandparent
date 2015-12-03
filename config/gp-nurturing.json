@@ -1,9 +1,10 @@
 {
-  "tn": 0,
+  "mt": 1,
   "gp": true,
   "pr": true,
   "mg": 200,
   "xn": "GrandparentTrial",
   "ms": 1000,
-  "ps": 80
+  "ps": 80,
+  "xp_path" : "grandparent-nurturing"
 }

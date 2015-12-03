@@ -17,14 +17,13 @@ namespace nevil
   public:
     grandparent_trial();
     grandparent_trial(nevil::args &cl_args);
-    virtual ~grandparent_trial();
     
     bool reset();
     bool update();
     bool epoch();
     nevil::grandparent_individual get_best_individual() const;
-    std::string get_generation_data();
-    Enki::World *get_trial_world();
+    Json::Value get_generation_data();
+    Enki::World *get_world() const;
 
 
   protected:
@@ -32,7 +31,7 @@ namespace nevil
     int _current_index;
 
     nevil::grandparent_individual _best_individual;
-    nevil::grandparent_arena *_trial_arena;
+    nevil::grandparent_arena _arena;
     nevil::grandparent_population _population;
   };
 }

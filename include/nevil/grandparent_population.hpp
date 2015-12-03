@@ -13,7 +13,7 @@ namespace nevil
   {
   public:
     grandparent_population();
-    grandparent_population(size_t pop_size, bool has_parent, bool has_grandparent ,float bracket_ratio ,float mutation_rate);
+    grandparent_population(size_t pop_size, bool has_parent, bool has_grandparent, double bracket_ratio, double mutation_rate);
     virtual ~grandparent_population();
 
     size_t size() const;
@@ -23,11 +23,9 @@ namespace nevil
     grandparent_individual *operator[](int i);
 
   protected:
-    // Number of individuals created so far
-    static int _individual_counter;
-    size_t _bracket_size;
-    float _mutation_rate;
     size_t _population_size;
+    size_t _bracket_size;
+    double _mutation_rate;
     std::vector <nevil::grandparent_individual *> _individual_list;
 
   };

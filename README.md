@@ -51,11 +51,10 @@ JSON Example:
 ```javascript
 {
   "tn": 1,
-  "sn": true, 
   "mg": 200,
   "xn": "TestTrial",
   "ms": 1000,
-  "ps": 80,
+  "ps": 80
 }
 ```
 ##### Specifying using command line
@@ -128,8 +127,7 @@ To install the required packages run the following commands:
 sudo apt-get install build-essential
 sudo apt-get install cmake
 sudo apt-get install git-core
-sudo apt-get install libqt4-core libqt4-dev libqt4-gui qt4-dev-tools
-sudo apt-get install freeglut3 freeglut3-dev
+sudo apt-get install libqt4-dev
 ```
 ##Structure
     nevil-grandparent

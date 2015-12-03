@@ -14,8 +14,8 @@ namespace nevil
   class grandparent_arena : public arena
   {
   public:
-    grandparent_arena(int size_x, int size_y, bool has_parent, bool has_grandparent, const Enki::Color &arena_color = Enki::Color(0.9, 0.9, 0.9));
-    virtual ~grandparent_arena();
+    grandparent_arena();
+    grandparent_arena(int size_x, int size_y, bool has_parent, bool has_grandparent);
 
     void set_individuals(nevil::grandparent_individual *child
       , nevil::grandparent_individual *parent

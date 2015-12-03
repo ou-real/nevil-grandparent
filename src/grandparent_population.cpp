@@ -1,17 +1,20 @@
 #include "nevil/grandparent_population.hpp"
-
-int nevil::grandparent_population::_individual_counter = 0;
-
+#include <iostream>
 nevil::grandparent_population::grandparent_population() {}
 
-nevil::grandparent_population::grandparent_population(size_t pop_size, bool has_parent, bool has_grandparent, float bracket_ratio, float mutation_rate)
+nevil::grandparent_population::grandparent_population(size_t pop_size, bool has_parent, bool has_grandparent, double bracket_ratio, double mutation_rate)
   : _population_size(pop_size)
   , _bracket_size(int(bracket_ratio * pop_size))
   , _mutation_rate(mutation_rate)
 {
   _individual_list = std::vector<nevil::grandparent_individual *>(3 * _population_size);
-  int genome_size = 38 + (2 * has_grandparent) + (2 * has_grandparent);
-
+  // 19 base input (18 camera + 1 bias) => 38 genes
+  // If has parents +2 more neuron (4 more genes)
+  // Is has grandparents +1 more neuron (2 more genes)
+  int genome_size = 38 + (4 * has_parent) + (2 * has_grandparent);
+  std::cout << has_parent << std::endl;
+  std::cout << genome_size << std::endl;
+ std::cout << has_grandparent << std::endl;
   for (int i = 0; i < _population_size; ++i)
   {
     // Creating grandparents
@@ -41,7 +44,7 @@ size_t nevil::grandparent_population::size() const
 nevil::grandparent_individual nevil::grandparent_population::next_generation()
 {
 
-  std::vector<int> selected_indices = nevil::evolution::tournament_selection(_individual_list.begin(), _individual_list.begin() + _population_size, _population_size, _bracket_size);
+  auto selected_indices = nevil::evolution::tournament_selection(_individual_list.begin(), _individual_list.begin() + _population_size, _population_size, _bracket_size);
   std::vector<nevil::grandparent_individual *> new_individuals(_individual_list.size());
 
   nevil::grandparent_individual *max_individual = _individual_list[0];
@@ -67,7 +70,7 @@ nevil::grandparent_individual nevil::grandparent_population::next_generation()
   for (auto i : _individual_list)
     delete i;
 
-  _individual_list = new_individuals;
+  _individual_list = std::move(new_individuals);
 
   return best_individual;
 }

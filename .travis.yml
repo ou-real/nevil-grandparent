@@ -3,12 +3,28 @@ language:
 
 compiler:
   - gcc
+  - clang
+
+install:
+- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.8
+    - g++-4.8
+    - clang
 
 script:
+  - clang++ --version
+  - g++ --version
   - cmake CMakeLists.txt -DGUI=OFF -DDEBUG=ON -DO=OFF
   - make
-  - ./build/nevil -tn 1 -ps 20 -mg 5 -xn GrandparentTrial
-  - ./build/nevil -mt 10 -ps 20 -mg 5 -xn GrandparentTrial
+
+  - ./build/nevil -tn 1 -ps 20 -mg 2 -xn GrandparentTrial
+  - ./build/nevil -mt 10 -ps 20 -mg 2 -xn GrandparentTrial
 
   - cmake CMakeLists.txt -DGUI=OFF -DDEBUG=OFF -DO=ON
   - make
