@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cd ../build;
+
+#self-care
+./nevil -xp_path self-care -tn 0 -xn GrandparentTrial -pr false -gp false
+
+#parent-nurturing
+./nevil -xp_path parent-nurturing -tn 0 -xn GrandparentTrial -pr true -gp false
+
+#grandparent-nurturing
+./nevil -xp_path grandparent-nurturing -tn 0 -xn GrandparentTrial -pr true -gp true
