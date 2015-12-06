@@ -9,31 +9,14 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
  , _has_parent(has_parent)
  , _has_grandparent(has_grandparent)
 {
-  const double OBJECT_SIZE_X = 6;
-  const double OBJECT_SIZE_Y = 0.1;
-  const double OBJECT_HEIGHT = 7;
-  const double INITIAL_DEGREE = 0;
-
   //switch A
-  _add_object(new nevil::switch_object(world_size_x * (5/ 8.0)
-    , 0
-    , OBJECT_SIZE_X
-    , OBJECT_SIZE_Y
-    , OBJECT_HEIGHT));
+  _add_object("switch A", new nevil::switch_object(world_size_x * (5/ 8.0), 0));
   
   //switch B
-  _add_object(new nevil::switch_object(world_size_x * (5/ 8.0)
-    , world_size_y
-    , OBJECT_SIZE_X
-    , OBJECT_SIZE_Y
-    , OBJECT_HEIGHT));
+  _add_object("switch B", new nevil::switch_object(world_size_x * (5/ 8.0), world_size_y));
   
   //light
-  _add_object(new nevil::light(0
-    , world_size_y / 2.0
-    , OBJECT_SIZE_Y
-    , OBJECT_SIZE_X
-    , OBJECT_HEIGHT));
+  _add_object("light", new nevil::light(0, world_size_y / 2.0, 6, 0.1));
 
   //--robots--
   // Create a robot named child with 0 degree angle
@@ -88,16 +71,16 @@ bool nevil::grandparent_arena::update()
   for (auto r : _robot_vector)
   {
     // Turning the switches and lights on based on the position of the robots
-    if(r->is_at_switch())
+    if(r->is_at(_objects["switch A"], OFF))
     {
-      // If the robot is at the left switch
-      if (r->pos.y < _world->w/2)
-        _object_vector[0]->turn_on();
-      // The robot is at the right switch
-      else
-        _object_vector[1]->turn_on();
-      // Turn on the light
-      _object_vector[2]->turn_on();
+      _objects["switch A"]->turn_on();
+      _objects["light"]->turn_on();
+    }
+
+    if(r->is_at(_objects["switch B"], OFF))
+    {
+      _objects["switch B"]->turn_on();
+      _objects["light"]->turn_on();
     }
   }
 

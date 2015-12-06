@@ -12,11 +12,11 @@ namespace nevil
   {
   public:
     grandparent_robot();
-    grandparent_robot(double x, double y, double angle, bool has_parent, bool has_grandparent, const std::string &robot_name, const Enki::Color &color);
-
+    grandparent_robot(double x, double y, double angle, bool has_parent
+      , bool has_grandparent, const std::string &robot_name, const Enki::Color &color);
 
     nevil::grandparent_robot *clone() const;
-    bool update(const std::vector<object *> &objects);
+    bool update(const nevil::object_list &objects);
     void set_individual(nevil::individual *i);
 
   protected:

@@ -6,8 +6,8 @@ nevil::grandparent_individual::grandparent_individual()
 
 nevil::grandparent_individual::grandparent_individual(size_t chromo_size)
   : nevil::individual(chromo_size)
-  , _turned_on_light_a(0)
-  , _turned_on_light_b(0)
+  , _turned_on_switch_A(0)
+  , _turned_on_switch_B(0)
   , _light_power(0)
 {
   // Assign values to every gene in the chromosome
@@ -15,23 +15,22 @@ nevil::grandparent_individual::grandparent_individual(size_t chromo_size)
     _chromosome[i] = nevil::random::random_int(-15, 15);
 }
 
-nevil::grandparent_individual::grandparent_individual(const std::vector<double> &chromosome)
+nevil::grandparent_individual::grandparent_individual(const nevil::chromosome &chromo)
   : nevil::individual()
-  , _turned_on_light_a(0)
-  , _turned_on_light_b(0)
+  , _turned_on_switch_A(0)
+  , _turned_on_switch_B(0)
   , _light_power(0)
 {
   _chromosome = chromosome;
 }
 
-void nevil::grandparent_individual::set_turn_on_light_a(bool a)
+void nevil::grandparent_individual::set_turned_on_switch(const std::string name, bool on);
 {
-  _turned_on_light_a = a;
-}
+  if (name == "A")
+    _turned_on_switch_A = on;
 
-void nevil::grandparent_individual::set_turn_on_light_b(bool b)
-{
-  _turned_on_light_b = b;
+  else if (name == "B")
+    _turned_on_switch_B = on;
 }
 
 void nevil::grandparent_individual::increase_fitness(double fitness)
@@ -43,8 +42,8 @@ void nevil::grandparent_individual::increase_fitness(double fitness)
 Json::Value nevil::grandparent_individual::json() const
 {
   Json::Value data;
-  data["switchA"] = _turned_on_light_a;
-  data["switchB"] = _turned_on_light_b;
+  data["switchA"] = _turned_on_switch_A;
+  data["switchB"] = _turned_on_switch_B;
   data["lightPower"] = _light_power;
   data["fitness"] = _fitness;
   return data;
@@ -53,14 +52,4 @@ Json::Value nevil::grandparent_individual::json() const
 nevil::grandparent_individual* nevil::grandparent_individual::clone() const 
 {
   return new grandparent_individual(_chromosome);
-}
-
-void nevil::grandparent_individual::mutate(double rate)
-{
-  assert ((0 <= rate && rate <= 1) && "Mutation rate must be between 0 and 1");
-  if (nevil::random::random_double() <= rate)
-  {
-    int gene_index = nevil::random::random_int() % (_chromosome.size());
-    _chromosome[gene_index] = nevil::random::random_int(-15, 15);
-  }
 }

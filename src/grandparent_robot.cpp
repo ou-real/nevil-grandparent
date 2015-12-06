@@ -4,9 +4,9 @@ nevil::grandparent_robot::grandparent_robot()
   : robot()
 {}
 
-  // Need 19 inputs for self-care
-  // To assign roles of parent-child we need two more neurons
-  // To assign grandparent we need 3 more neurons  
+// Need 19 inputs for self-care
+// To assign roles of parent-child we need two more neurons
+// To assign grandparent we need 3 more neurons  
 nevil::grandparent_robot::grandparent_robot(double x, double y, double angle, bool has_parent, bool has_grandparent, const std::string &robot_name, const Enki::Color &color)
   : robot(x, y, angle, robot_name, color, 18)
   , _has_parent(has_parent)
@@ -16,36 +16,32 @@ nevil::grandparent_robot::grandparent_robot(double x, double y, double angle, bo
 
 void nevil::grandparent_robot::set_individual(nevil::individual *i)
 {
-  _individual = dynamic_cast<grandparent_individual *> (i);
+  _individual = dynamic_cast<nevil::grandparent_individual *> (i);
   _neural_network.set_weights(_individual->get_chromosome());
 }
 
 nevil::grandparent_robot *nevil::grandparent_robot::clone() const
 {
-  // Need to fix this
-  return new nevil::grandparent_robot();
+  return new nevil::grandparent_robot(*this);
 }
 
-bool nevil::grandparent_robot::update(const std::vector<object *> &objects)
+bool nevil::grandparent_robot::update(const nevil::object_list &objects)
 {
   // Get the sensor information
-  std::vector<double> inputs = _get_camera_inputs();
+  auto inputs = _get_camera_inputs();
 
-  if (is_at_switch())
-  {
-    if (this->pos.y < (objects[0]->pos.y + 10) && !objects[0]->is_on())
-      _individual->set_turn_on_light_a(true);
-    else if (!objects[1]->is_on())
-      _individual->set_turn_on_light_b(true);
-  }
+  if (is_at(objects.at("switch A"), ON))
+      _individual->set_turned_on_switch("A");
 
-  if (is_at_light())
+  if (is_at(objects.at("switch B"), ON))
+      _individual->set_turned_on_switch("B");
+
+  if (is_at(objects.at("light"), ON))
   {
     // If both switches are on add 1 fitness
-    if (objects[0]->is_on() && objects[1]->is_on())
+    if (objects.at("switch A")->is_on() && objects.at("switch B")->is_on())
       _individual->increase_fitness(1);
-    // Else give 0.5 fitness because only one of the switches are on.
-    else
+    else // Else give 0.5 fitness because only one of the switches are on.
       _individual->increase_fitness(0.5);
   }
 
@@ -78,11 +74,6 @@ bool nevil::grandparent_robot::update(const std::vector<object *> &objects)
 
   // Evaluate the neural network
   auto output = _neural_network.update(inputs);
-  // if (_robot_name == "child")
-  // {
-  //   output[0] /= 2;
-  //   output[1] /= 2;
-  // }
   // Pass the output of each NN and convert it to motor velocities
   _set_wheels_speed(output[0], output[1]);
   return true;

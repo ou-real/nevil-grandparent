@@ -13,21 +13,24 @@ namespace nevil
   {
   public:
     grandparent_population();
-    grandparent_population(size_t pop_size, bool has_parent, bool has_grandparent, double bracket_ratio, double mutation_rate);
+    grandparent_population(size_t pop_size, bool has_parent, bool has_grandparent
+      , double bracket_ratio, double mutation_rate);
+    grandparent_population(const nevil::grandparent_population &rhs);
+    grandparent_population(nevil::grandparent_population &&rhs) noexcept;
     virtual ~grandparent_population();
 
     size_t size() const;
     nevil::grandparent_individual next_generation();
 
-    grandparent_population &operator=(const grandparent_population &rhs);
-    grandparent_individual *operator[](int i);
+    nevil::grandparent_population &operator=(const grandparent_population &rhs);
+    nevil::grandparent_population &operator=(grandparent_population &&rhs);
+    nevil::grandparent_individual *operator[](int i);
 
   protected:
     size_t _population_size;
     size_t _bracket_size;
     double _mutation_rate;
     std::vector <nevil::grandparent_individual *> _individual_list;
-
   };
 }
 

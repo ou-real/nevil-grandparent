@@ -3,7 +3,6 @@
 
 
 #include "nevil/trial.hpp"
-
 #include "nevil/grandparent_population.hpp"
 #include "nevil/grandparent_arena.hpp"
 #include "nevil/util/logger.hpp"
@@ -16,7 +15,7 @@ namespace nevil
   {
   public:
     grandparent_trial();
-    grandparent_trial(nevil::args &cl_args);
+    grandparent_trial(const nevil::args &cl_args);
     
     bool reset();
     bool update();

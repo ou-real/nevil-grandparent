@@ -1,20 +1,19 @@
 #include "nevil/grandparent_population.hpp"
 #include <iostream>
-nevil::grandparent_population::grandparent_population() {}
+nevil::grandparent_population::grandparent_population() 
+{}
 
 nevil::grandparent_population::grandparent_population(size_t pop_size, bool has_parent, bool has_grandparent, double bracket_ratio, double mutation_rate)
   : _population_size(pop_size)
   , _bracket_size(int(bracket_ratio * pop_size))
   , _mutation_rate(mutation_rate)
+  , _individual_list(std::vector<nevil::grandparent_individual *>(3 * pop_size))
 {
-  _individual_list = std::vector<nevil::grandparent_individual *>(3 * _population_size);
   // 19 base input (18 camera + 1 bias) => 38 genes
   // If has parents +2 more neuron (4 more genes)
   // Is has grandparents +1 more neuron (2 more genes)
   int genome_size = 38 + (4 * has_parent) + (2 * has_grandparent);
-  std::cout << has_parent << std::endl;
-  std::cout << genome_size << std::endl;
- std::cout << has_grandparent << std::endl;
+
   for (int i = 0; i < _population_size; ++i)
   {
     // Creating grandparents
@@ -28,6 +27,24 @@ nevil::grandparent_population::grandparent_population(size_t pop_size, bool has_
     _individual_list[i] = _individual_list[i + _population_size]->clone();
     _individual_list[i]->mutate(_mutation_rate);
   }
+}
+
+nevil::grandparent_population::grandparent_population(const nevil::grandparent_population &rhs)
+  : _population_size(rhs._population_size)
+  , _bracket_size(rhs._bracket_size)
+  , _mutation_rate(rhs._mutation_rate)
+  , _individual_list(std::vector<nevil::grandparent_individual *> (rhs.size()))
+{
+  for (int i = 0; i < _individual_list.size(); ++i)
+    _individual_list[i] = new nevil::grandparent_individual(*rhs._individual_list[i]);
+}
+
+nevil::grandparent_population::grandparent_population(nevil::grandparent_population &&rhs) noexcept
+  : _population_size(rhs._population_size)
+  , _bracket_size(rhs._bracket_size)
+  , _mutation_rate(rhs._mutation_rate)
+{
+  std::swap(_individual_list, rhs._individual_list);
 }
 
 nevil::grandparent_population::~grandparent_population()
@@ -77,16 +94,17 @@ nevil::grandparent_individual nevil::grandparent_population::next_generation()
 
 nevil::grandparent_population &nevil::grandparent_population::operator=(const nevil::grandparent_population &rhs)
 {
-  for (auto i : _individual_list)
-    delete i;
-  _population_size = rhs._population_size;
-  _mutation_rate = rhs._mutation_rate;
-  _bracket_size = rhs._bracket_size;
-  _individual_list = std::vector<nevil::grandparent_individual *> (rhs.size());
-  for (int i = 0; i < _individual_list.size(); ++i)
-    _individual_list[i] = new nevil::grandparent_individual(*rhs._individual_list[i]);
+  nevil::grandparent_population tmp(rhs);
+  *this = std::move(tmp);
+  return *this;
+}
 
-  return (*this);
+nevil::grandparent_population &nevil::grandparent_population::operator=(nevil::grandparent_population &&rhs) noexcept
+{
+  _population_size = rhs._population_size;
+  _bracket_size = rhs._bracket_size;
+  _mutation_rate = rhs._mutation_rate;
+  std::swap(_individual_list, rhs._individual_list);
 }
 
 nevil::grandparent_individual* nevil::grandparent_population::operator[](int i)

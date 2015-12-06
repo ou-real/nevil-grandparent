@@ -1,9 +1,9 @@
 #include "nevil/grandparent_trial.hpp"
 
-nevil::grandparent_trial::grandparent_trial() {}
+nevil::grandparent_trial::grandparent_trial()
+{}
 
-
-nevil::grandparent_trial::grandparent_trial(nevil::args &cl_args)
+nevil::grandparent_trial::grandparent_trial(const nevil::args &cl_args)
 {
   const int WORLD_SIZE_X = 70;
   const int WORLD_SIZE_Y = 50;
@@ -54,7 +54,13 @@ Json::Value nevil::grandparent_trial::get_generation_data()
 {
   Json::Value generation_info (Json::arrayValue);
   for (int i = 0; i < _population_size; ++i)
-    generation_info.append(_population[i]->json());
+  {
+    Json::Value family;
+    family["child"] = _population[i]->json();
+    family["parent"] = _population[i + _population_size]->json();
+    family["grandparent"] = _population[i + (2 * _population_size)]->json();
+    generation_info.append(family);
+  }
 
   return generation_info;
 }
