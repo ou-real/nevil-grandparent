@@ -27,9 +27,6 @@ nevil::grandparent_robot *nevil::grandparent_robot::clone() const
 
 bool nevil::grandparent_robot::update(const nevil::object_list &objects)
 {
-  // Get the sensor information
-  auto inputs = _get_camera_inputs();
-
   if (is_at(objects.at("switch A"), ON))
       _individual->set_turned_on_switch("A");
 
@@ -45,6 +42,8 @@ bool nevil::grandparent_robot::update(const nevil::object_list &objects)
       _individual->increase_fitness(0.5);
   }
 
+  // Get the sensor information
+  auto inputs = _get_camera_inputs(objects);
     // Add the bias input
   inputs.push_back(1);
 

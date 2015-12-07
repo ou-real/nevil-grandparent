@@ -8,11 +8,11 @@ nevil::grandparent_trial::grandparent_trial(const nevil::args &cl_args)
   const int WORLD_SIZE_X = 70;
   const int WORLD_SIZE_Y = 50;
 
-  _population_size = std::stoi(cl_args["ps"]);
-  float bracket_ratio = std::stof(cl_args["br"]);
-  float mutation_rate = std::stof(cl_args["mr"]);
-  bool has_grandparent = (cl_args["gp"] == "true");
-  bool has_parent = (cl_args["pr"] == "true");
+  _population_size = std::stoi(cl_args.at("ps"));
+  float bracket_ratio = std::stof(cl_args.at("br"));
+  float mutation_rate = std::stof(cl_args.at("mr"));
+  bool has_grandparent = (cl_args.at("gp") == "true");
+  bool has_parent = (cl_args.at("pr") == "true");
 
   _arena = nevil::grandparent_arena(WORLD_SIZE_X, WORLD_SIZE_Y, has_parent, has_grandparent);
   _population = nevil::grandparent_population(_population_size, has_parent, has_grandparent, bracket_ratio, mutation_rate);

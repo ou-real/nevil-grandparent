@@ -16,13 +16,13 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
   _add_object("switch B", new nevil::switch_object(world_size_x * (5/ 8.0), world_size_y));
   
   //light
-  _add_object("light", new nevil::light(0, world_size_y / 2.0, 6, 0.1));
+  _add_object("light", new nevil::light(0, world_size_y / 2.0, 0.1, 6));
 
   //--robots--
   // Create a robot named child with 0 degree angle
   _add_robot(new nevil::grandparent_robot(world_size_x / 4.0
     , world_size_y / 2.0
-    , INITIAL_DEGREE
+    , 0
     , _has_parent
     , _has_grandparent
     , "child"
@@ -33,7 +33,7 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
   {
     _add_robot(new nevil::grandparent_robot(world_size_x / 2.0
       , world_size_y / 2.0
-      , INITIAL_DEGREE
+      , 0
       , _has_parent
       , _has_grandparent
       , "parent"
@@ -45,11 +45,11 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
   {
     _add_robot(new nevil::grandparent_robot(world_size_x * (3 / 4.0)
       , world_size_y / 2.0
-      , INITIAL_DEGREE
+      , 0
       , _has_parent
       , _has_grandparent
       , "grandparent"
-      , Enki::Color(0.5, 0.0, 0.0)));
+      , Enki::Color(0.9, 0.0, 0.0)));
   }
 }
 
@@ -57,35 +57,35 @@ void nevil::grandparent_arena::set_individuals(nevil::grandparent_individual *ch
   , nevil::grandparent_individual *parent
   , nevil::grandparent_individual *grandparent)
 {
-  _robot_vector[0]->set_individual(child);
+  _robots[0]->set_individual(child);
   if (_has_parent)
-    _robot_vector[1]->set_individual(parent);
+    _robots[1]->set_individual(parent);
   if (_has_grandparent)
-    _robot_vector[2]->set_individual(grandparent);
+    _robots[2]->set_individual(grandparent);
 }
 
 bool nevil::grandparent_arena::update()
 {
   nevil::arena::update();
   // Updating the environment
-  for (auto r : _robot_vector)
+  for (auto r : _robots)
   {
     // Turning the switches and lights on based on the position of the robots
-    if(r->is_at(_objects["switch A"], OFF))
+    if(r->is_at(_objects.at("switch A"), OFF))
     {
-      _objects["switch A"]->turn_on();
-      _objects["light"]->turn_on();
+      _objects.at("switch A")->turn_on();
+      _objects.at("light")->turn_on();
     }
 
-    if(r->is_at(_objects["switch B"], OFF))
+    else if(r->is_at(_objects.at("switch B"), OFF))
     {
-      _objects["switch B"]->turn_on();
-      _objects["light"]->turn_on();
+      _objects.at("switch B")->turn_on();
+      _objects.at("light")->turn_on();
     }
   }
 
   // Updating the robots
-  for (auto r : _robot_vector)
-    r->update(_object_vector);
+  for (auto r : _robots)
+    r->update(_objects);
   return true;
 }

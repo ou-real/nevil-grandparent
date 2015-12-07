@@ -22,7 +22,7 @@ namespace nevil
     bool gained_fitness() const;
 
     void increase_fitness(double fitness);
-    void set_turned_on_switch (const std::string name, bool on = true);
+    void set_turned_on_switch(const std::string &name, bool on = true);
 
   protected:
     // Indicates whether this individual activated the switch in a given trial

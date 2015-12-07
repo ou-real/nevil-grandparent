@@ -21,10 +21,10 @@ nevil::grandparent_individual::grandparent_individual(const nevil::chromosome &c
   , _turned_on_switch_B(0)
   , _light_power(0)
 {
-  _chromosome = chromosome;
+  _chromosome = chromo;
 }
 
-void nevil::grandparent_individual::set_turned_on_switch(const std::string name, bool on);
+void nevil::grandparent_individual::set_turned_on_switch(const std::string &name, bool on)
 {
   if (name == "A")
     _turned_on_switch_A = on;

@@ -23,7 +23,7 @@ namespace nevil
     nevil::grandparent_individual next_generation();
 
     nevil::grandparent_population &operator=(const grandparent_population &rhs);
-    nevil::grandparent_population &operator=(grandparent_population &&rhs);
+    nevil::grandparent_population &operator=(grandparent_population &&rhs) noexcept;
     nevil::grandparent_individual *operator[](int i);
 
   protected:

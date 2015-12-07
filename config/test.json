@@ -1,6 +1,6 @@
 {
   "mt": 1,
-  "gp": false,
+  "gp": true,
   "pr": true,
   "mg": 30,
   "xn": "GrandparentTrial",

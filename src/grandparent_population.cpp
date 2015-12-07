@@ -105,6 +105,7 @@ nevil::grandparent_population &nevil::grandparent_population::operator=(nevil::g
   _bracket_size = rhs._bracket_size;
   _mutation_rate = rhs._mutation_rate;
   std::swap(_individual_list, rhs._individual_list);
+  return *this;
 }
 
 nevil::grandparent_individual* nevil::grandparent_population::operator[](int i)
