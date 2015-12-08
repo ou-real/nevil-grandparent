@@ -85,22 +85,6 @@ void nevil::grandparent_arena::set_individuals(nevil::grandparent_individual *ch
 bool nevil::grandparent_arena::update()
 {
   nevil::arena::update();
-  // Updating the environment
-  for (auto r : _robots)
-  {
-    // Turning the switches and lights on based on the position of the robots
-    if(r->is_at(_objects.at("switch A"), OFF))
-    {
-      _objects.at("switch A")->turn_on();
-      _objects.at("light")->turn_on();
-    }
-
-    else if(r->is_at(_objects.at("switch B"), OFF))
-    {
-      _objects.at("switch B")->turn_on();
-      _objects.at("light")->turn_on();
-    }
-  }
 
   // Updating the robots
   for (auto r : _robots)
