@@ -11,10 +11,10 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
 {
 
   Enki::Color switch_A_off_color(0.4, 0.0, 1.0);
-  Enki::Color switch_A_on_color(0.9, 1.0, 1.0);
+  Enki::Color switch_A_on_color(0.4, 1.0, 1.0);
 
   Enki::Color switch_B_off_color(0.6, 0.0, 1.0);
-  Enki::Color switch_B_on_color(0.9, 0.5, 1.0);
+  Enki::Color switch_B_on_color(0.6, 1.0, 1.0);
 
   //switch A
   _add_object("switch A", new nevil::switch_object(
