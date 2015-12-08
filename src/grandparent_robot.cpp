@@ -25,6 +25,38 @@ nevil::grandparent_robot *nevil::grandparent_robot::clone() const
   return new nevil::grandparent_robot(*this);
 }
 
+std::vector<double> nevil::grandparent_robot::_get_camera_inputs(const nevil::object_list &objects, 
+  nevil::color_chanel chanel) const
+{
+  // Reset the counters
+  std::vector<double> sensor_counter(_input_num, 0);
+
+  // Each color has 6 groups of pixels
+  for (short i = 0; i < 6; ++i)
+  {
+    // One group is 10 pixels
+    for (short j = 0; j < 10; ++j)
+    {
+      double pixel_value = camera.image[i * 10 + j][chanel];
+      // Switch
+      if (pixel_value == objects.at("switch A")->get_off_color()[chanel])
+        ++sensor_counter[i];
+      // Light off
+      if (pixel_value == objects.at("light")->get_off_color()[chanel])
+        ++sensor_counter[i + 6];
+      // Light on
+      if (pixel_value == objects.at("light")->get_on_color()[chanel])
+        ++sensor_counter[i + 12];
+    }
+  }
+
+  // Adjust the sensor information
+  for (size_t i = 0; i < _input_num; ++i)
+    sensor_counter[i] = sensor_counter[i] > 7;
+
+  return sensor_counter;
+}
+
 bool nevil::grandparent_robot::update(const nevil::object_list &objects)
 {
     if(is_at(objects.at("switch A"), OFF))

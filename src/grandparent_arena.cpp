@@ -9,11 +9,29 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
  , _has_parent(has_parent)
  , _has_grandparent(has_grandparent)
 {
+
+  Enki::Color switch_off_color(0.4, 0.0, 1.0);
+  Enki::Color switch_on_color(0.9, 1.0, 1.0);
+
   //switch A
-  _add_object("switch A", new nevil::switch_object(world_size_x * (5/ 8.0), 0));
+  _add_object("switch A", new nevil::switch_object(
+    world_size_x * (5/ 8.0)  // x coordinate
+    , 0                      // y coordinate
+    , 6                      // size x
+    , 0.1                    // size y
+    , 7                      // height
+    , switch_off_color       // Off color
+    , switch_on_color));     // On color
   
   //switch B
-  _add_object("switch B", new nevil::switch_object(world_size_x * (5/ 8.0), world_size_y));
+  _add_object("switch B", new nevil::switch_object(
+    world_size_x * (5/ 8.0)  // x coordinate
+    , world_size_y           // y coordinate
+    , 6                      // size x
+    , 0.1                    // size y
+    , 7                      // height
+    , switch_off_color       // Off color
+    , switch_on_color));     // On color
   
   //light
   _add_object("light", new nevil::light(0, world_size_y / 2.0, 0.1, 6));

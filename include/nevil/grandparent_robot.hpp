@@ -15,11 +15,15 @@ namespace nevil
     grandparent_robot(double x, double y, double angle, bool has_parent
       , bool has_grandparent, const std::string &robot_name, const Enki::Color &color);
 
+
     nevil::grandparent_robot *clone() const;
     bool update(const nevil::object_list &objects);
     void set_individual(nevil::individual *i);
 
   protected:
+    std::vector<double> _get_camera_inputs(const nevil::object_list &objects, 
+      nevil::color_chanel chanel = RED) const;
+
     bool _has_parent;
     bool _has_grandparent;
     nevil::grandparent_individual *_individual;
