@@ -39,7 +39,7 @@ std::vector<double> nevil::grandparent_robot::_get_camera_inputs(const nevil::ob
     {
       double pixel_value = camera.image[i * 10 + j][chanel];
       // Switch
-      if (pixel_value == nevil::switch_object::DEFAULT_OFF_COLOR[chanel])
+      if (pixel_value == objects.at("switch A")->get_off_color()[chanel])
         ++sensor_counter[i];
       // Light off
       if (pixel_value == objects.at("light")->get_off_color()[chanel])
