@@ -3,6 +3,7 @@
 
 
 #include "nevil/arena/robot.hpp"
+#include "nevil/arena/stage_light.hpp"
 #include "nevil/robot_controller/basic_feedforward_nn.hpp"
 #include "nevil/grandparent_individual.hpp"
 

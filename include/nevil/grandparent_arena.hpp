@@ -3,6 +3,8 @@
 
 #include "nevil/arena/arena.hpp"
 #include "nevil/arena/light.hpp"
+#include "nevil/arena/stage_light.hpp"
+
 #include "nevil/arena/switch.hpp"
 
 #include "nevil/grandparent_individual.hpp"

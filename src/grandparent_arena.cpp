@@ -37,7 +37,7 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
     , switch_B_on_color));   // On color
 
   //light
-  _add_object("light", new nevil::light(0, world_size_y / 2.0, 0.1, 6));
+  _add_object("light", new nevil::stage_light(0, world_size_y / 2.0, 0.1, 6));
 
   //--robots--
   // Create a robot named child with 0 degree angle

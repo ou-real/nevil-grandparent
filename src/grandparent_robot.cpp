@@ -8,10 +8,10 @@ nevil::grandparent_robot::grandparent_robot()
 // To assign roles of parent-child we need two more neurons
 // To assign grandparent we need 3 more neurons  
 nevil::grandparent_robot::grandparent_robot(double x, double y, double angle, bool has_parent, bool has_grandparent, const std::string &robot_name, const Enki::Color &color)
-  : robot(x, y, angle, robot_name, color, 24)
+  : robot(x, y, angle, robot_name, color, 30)
   , _has_parent(has_parent)
   , _has_grandparent(has_grandparent)
-  , _neural_network(nevil::basic_feedforward_nn(25 + (2 * _has_parent) + _has_grandparent, 2))
+  , _neural_network(nevil::basic_feedforward_nn(31 + (2 * _has_parent) + _has_grandparent, 2))
 {}
 
 void nevil::grandparent_robot::set_individual(nevil::individual *i)
@@ -48,8 +48,11 @@ std::vector<double> nevil::grandparent_robot::_get_camera_inputs(const nevil::ob
       if (pixel_value == objects.at("light")->get_off_color()[chanel])
         ++sensor_counter[i + 12];
       // Light on
-      if (pixel_value == objects.at("light")->get_on_color()[chanel])
+      if (pixel_value == nevil::stage_light::DEFAULT_ON_COLOR[chanel])
         ++sensor_counter[i + 18];
+      // Light full on
+      if (pixel_value == nevil::stage_light::DEFAULT_FULL_ON_COLOR[chanel])
+        ++sensor_counter[i + 24];
     }
   }
 
@@ -62,7 +65,7 @@ std::vector<double> nevil::grandparent_robot::_get_camera_inputs(const nevil::ob
 
 bool nevil::grandparent_robot::update(const nevil::object_list &objects)
 {
-    if(is_at(objects.at("switch A"), OFF))
+  if(is_at(objects.at("switch A"), OFF))
   {
     objects.at("switch A")->turn_on();
     objects.at("light")->turn_on();
@@ -74,6 +77,12 @@ bool nevil::grandparent_robot::update(const nevil::object_list &objects)
     objects.at("switch B")->turn_on();
     objects.at("light")->turn_on();
     _individual->set_turned_on_switch("B");
+  }
+
+  if (objects.at("switch A")->is_on() && objects.at("switch B")->is_on())
+  {
+    objects.at("light")->set_on_color(nevil::stage_light::DEFAULT_FULL_ON_COLOR);
+    objects.at("light")->turn_on();
   }
 
   if (is_at(objects.at("light"), ON))
