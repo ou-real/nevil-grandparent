@@ -12,7 +12,7 @@ nevil::grandparent_population::grandparent_population(size_t pop_size, bool has_
   // 19 base input (18 camera + 1 bias) => 38 genes
   // If has parents +2 more neuron (4 more genes)
   // Is has grandparents +1 more neuron (2 more genes)
-  int genome_size = 62 + (4 * has_parent) + (2 * has_grandparent);
+  int genome_size = 50 + (4 * has_parent) + (2 * has_grandparent);
 
   for (int i = 0; i < _population_size; ++i)
   {

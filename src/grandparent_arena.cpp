@@ -10,11 +10,8 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
  , _has_grandparent(has_grandparent)
 {
 
-  Enki::Color switch_A_off_color(0.4, 0.0, 1.0);
-  Enki::Color switch_A_on_color(0.4, 1.0, 1.0);
-
-  Enki::Color switch_B_off_color(0.6, 0.0, 1.0);
-  Enki::Color switch_B_on_color(0.6, 1.0, 1.0);
+  Enki::Color switch_off_color(0.4, 0.0, 1.0);
+  Enki::Color switch_on_color(0.9, 1.0, 1.0);
 
   //switch A
   _add_object("switch A", new nevil::switch_object(
@@ -23,8 +20,8 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
     , 6                      // size x
     , 0.1                    // size y
     , 7                      // height
-    , switch_A_off_color     // Off color
-    , switch_A_on_color));   // On color
+    , switch_off_color       // Off color
+    , switch_on_color));   // On color
   
   //switch B
   _add_object("switch B", new nevil::switch_object(
@@ -33,8 +30,8 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
     , 6                      // size x
     , 0.1                    // size y
     , 7                      // height
-    , switch_B_off_color     // Off color
-    , switch_B_on_color));   // On color
+    , switch_off_color       // Off color
+    , switch_on_color));     // On color
 
   //light
   _add_object("light", new nevil::stage_light(0, world_size_y / 2.0, 0.1, 6));
