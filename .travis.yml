@@ -23,6 +23,8 @@ script:
   - make
 
   - ./build/nevil -tn 1 -ps 20 -mg 2 -xn GrandparentTrial
+  - ./build/nevil -tn 1 -ps 20 -mg 2 -pr true -xn GrandparentTrial
+  - ./build/nevil -tn 1 -ps 20 -mg 2 -pr true -gp true -xn GrandparentTrial
   - ./build/nevil -mt 10 -ps 20 -mg 2 -xn GrandparentTrial
 
   - cmake CMakeLists.txt -DGUI=OFF -DDEBUG=OFF -DO=ON
