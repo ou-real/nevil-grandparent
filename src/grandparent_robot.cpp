@@ -27,11 +27,19 @@ nevil::grandparent_robot *nevil::grandparent_robot::clone() const
 
 bool nevil::grandparent_robot::update(const nevil::object_list &objects)
 {
-  if (is_at(objects.at("switch A"), ON))
-      _individual->set_turned_on_switch("A");
+    if(is_at(objects.at("switch A"), OFF))
+  {
+    objects.at("switch A")->turn_on();
+    objects.at("light")->turn_on();
+    _individual->set_turned_on_switch("A");
+  }
 
-  if (is_at(objects.at("switch B"), ON))
-      _individual->set_turned_on_switch("B");
+  if(is_at(objects.at("switch B"), OFF))
+  {
+    objects.at("switch B")->turn_on();
+    objects.at("light")->turn_on();
+    _individual->set_turned_on_switch("B");
+  }
 
   if (is_at(objects.at("light"), ON))
   {
@@ -44,8 +52,6 @@ bool nevil::grandparent_robot::update(const nevil::object_list &objects)
 
   // Get the sensor information
   auto inputs = _get_camera_inputs(objects);
-    // Add the bias input
-  inputs.push_back(1);
 
   if (_robot_name == "child")
   {
@@ -70,6 +76,9 @@ bool nevil::grandparent_robot::update(const nevil::object_list &objects)
     inputs.push_back(0);
     inputs.push_back(1);
   }
+
+  // Add the bias input
+  inputs.push_back(1);
 
   // Evaluate the neural network
   auto output = _neural_network.update(inputs);

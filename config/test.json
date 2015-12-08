@@ -2,8 +2,6 @@
   "mt": 1,
   "gp": true,
   "pr": true,
-  "mg": 30,
-  "xn": "GrandparentTrial",
-  "ms": 1000,
-  "ps": 80
+  "mg": 20,
+  "xn": "GrandparentTrial"
 }
