@@ -3,15 +3,17 @@
 nevil::grandparent_population::grandparent_population() 
 {}
 
-nevil::grandparent_population::grandparent_population(size_t pop_size, bool has_parent, bool has_grandparent, double bracket_ratio, double mutation_rate)
-  : _population_size(pop_size)
-  , _bracket_size(int(bracket_ratio * pop_size))
-  , _mutation_rate(mutation_rate)
-  , _individual_list(std::vector<nevil::grandparent_individual *>(3 * pop_size))
+nevil::grandparent_population::grandparent_population(const nevil::args &cl_args)
+  : _population_size(std::stoi(cl_args.at("ps")))
+  , _bracket_size(size_t(std::stod(cl_args.at("br")) * _population_size))
+  , _mutation_rate(std::stod(cl_args.at("mr")))
+  , _individual_list(std::vector<nevil::grandparent_individual *>(3 * _population_size))
 {
   // 19 base input (18 camera + 1 bias) => 38 genes
   // If has parents +2 more neuron (4 more genes)
   // Is has grandparents +1 more neuron (2 more genes)
+  bool has_parent = (cl_args.at("pr") == "true");
+  bool has_grandparent = (cl_args.at("gp") == "true");
   int genome_size = 38 + (4 * has_parent) + (2 * has_grandparent);
 
   for (int i = 0; i < _population_size; ++i)

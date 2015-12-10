@@ -13,7 +13,7 @@ namespace nevil
   public:
     grandparent_robot();
     grandparent_robot(double x, double y, double angle, bool has_parent
-      , bool has_grandparent, const std::string &robot_name, const Enki::Color &color);
+      , bool has_grandparent, const std::string &robot_name, const Enki::Color &color, double max_speed);
 
 
     nevil::grandparent_robot *clone() const;

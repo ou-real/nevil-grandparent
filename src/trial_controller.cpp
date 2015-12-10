@@ -16,6 +16,8 @@ nevil::trial_controller::trial_controller(int id, unsigned seed, const nevil::ar
   bool has_grandparent = false;
   double mutation_rate = 0.25;
   double bracket_ratio = 0.1;
+  int world_size_x = 70;
+  int world_size_y = 50;
 
   // Reading the command line arguments
   nevil::args::const_iterator it;
@@ -29,6 +31,12 @@ nevil::trial_controller::trial_controller(int id, unsigned seed, const nevil::ar
 
   if ((it = local_args.find("ms")) != local_args.end())
     _max_step_num = stoi(it->second);
+
+  if ((it = local_args.find("wx")) == local_args.end())
+    local_args["wx"] = std::to_string(world_size_x);
+
+  if ((it = local_args.find("wy")) == local_args.end())
+    local_args["wy"] = std::to_string(world_size_y);
 
   if ((it = local_args.find("pr")) != local_args.end())
     has_parent = (it->second == "true");
@@ -68,6 +76,22 @@ nevil::trial_controller::trial_controller(int id, unsigned seed, const nevil::ar
   }
   else
     local_args["mr"] = std::to_string(mutation_rate);
+
+  //Speed Parameter
+  if ((it = local_args.find("childSpeed")) != local_args.end())
+    _root["config"]["childSpeed"] = std::stod(it->second);
+  else
+    local_args["childSpeed"] = "12.8";
+
+  if ((it = local_args.find("parentSpeed")) != local_args.end())
+    _root["config"]["parentSpeed"] = std::stod(it->second);
+  else
+    local_args["parentSpeed"] = "12.8";
+
+  if ((it = local_args.find("grandparentSpeed")) != local_args.end())
+    _root["config"]["grandparentSpeed"] = std::stod(it->second);
+  else
+    local_args["grandparentSpeed"] = "12.8";
 
   _trial_json_logger.start_new_file(local_args["xp_path"], "Trial_" + std::to_string(_trial_id) + ".json");
   _generational_data = Json::Value(Json::arrayValue);

@@ -1,13 +1,12 @@
 #ifndef _NEVIL_GRANDPARENT_ARENA_HPP_
 #define _NEVIL_GRANDPARENT_ARENA_HPP_
 
+#include "nevil/util/parser.hpp"
 #include "nevil/arena/arena.hpp"
 #include "nevil/arena/light.hpp"
 #include "nevil/arena/switch.hpp"
-
 #include "nevil/grandparent_individual.hpp"
 #include "nevil/grandparent_robot.hpp"
-
 
 namespace nevil
 {
@@ -15,7 +14,7 @@ namespace nevil
   {
   public:
     grandparent_arena();
-    grandparent_arena(int size_x, int size_y, bool has_parent, bool has_grandparent);
+    explicit grandparent_arena(const nevil::args &cl_args);
 
     void set_individuals(nevil::grandparent_individual *child
       , nevil::grandparent_individual *parent

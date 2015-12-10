@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <algorithm>
-
+#include "nevil/util/parser.hpp"
 #include "nevil/grandparent_individual.hpp"
 #include "nevil/util/evolution.hpp"
 
@@ -13,8 +13,7 @@ namespace nevil
   {
   public:
     grandparent_population();
-    grandparent_population(size_t pop_size, bool has_parent, bool has_grandparent
-      , double bracket_ratio, double mutation_rate);
+    explicit grandparent_population(const nevil::args &cl_args);
     grandparent_population(const nevil::grandparent_population &rhs);
     grandparent_population(nevil::grandparent_population &&rhs) noexcept;
     virtual ~grandparent_population();

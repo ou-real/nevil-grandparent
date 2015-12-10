@@ -4,10 +4,10 @@ nevil::grandparent_arena::grandparent_arena()
   : nevil::arena()
 {}
 
-nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,bool has_parent, bool has_grandparent)
- : nevil::arena(world_size_x, world_size_y)
- , _has_parent(has_parent)
- , _has_grandparent(has_grandparent)
+nevil::grandparent_arena::grandparent_arena(const nevil::args &cl_args)
+ : nevil::arena(std::stod(cl_args.at("wx")), std::stod(cl_args.at("wy")))
+ , _has_parent(cl_args.at("pr") == "true")
+ , _has_grandparent(cl_args.at("gp") == "true")
 {
 
   Enki::Color switch_off_color(0.4, 0.0, 1.0);
@@ -15,7 +15,7 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
 
   //switch A
   _add_object("switch A", new nevil::switch_object(
-    world_size_x * (5/ 8.0)  // x coordinate
+    _world->w * (5/ 8.0)  // x coordinate
     , 0                      // y coordinate
     , 6                      // size x
     , 0.1                    // size y
@@ -25,8 +25,8 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
   
   //switch B
   _add_object("switch B", new nevil::switch_object(
-    world_size_x * (5/ 8.0)  // x coordinate
-    , world_size_y           // y coordinate
+    _world->w * (5/ 8.0)  // x coordinate
+    , _world->h           // y coordinate
     , 6                      // size x
     , 0.1                    // size y
     , 7                      // height
@@ -34,40 +34,43 @@ nevil::grandparent_arena::grandparent_arena(int world_size_x, int world_size_y,b
     , switch_on_color));     // On color
   
   //light
-  _add_object("light", new nevil::light(0, world_size_y / 2.0, 0.1, 6));
+  _add_object("light", new nevil::light(0, _world->h / 2.0, 0.1, 6));
 
   //--robots--
   // Create a robot named child with 0 degree angle
-  _add_robot(new nevil::grandparent_robot(world_size_x / 4.0
-    , world_size_y / 2.0
+  _add_robot(new nevil::grandparent_robot(_world->w / 4.0
+    , _world->h / 2.0
     , 0
     , _has_parent
     , _has_grandparent
     , "child"
-    , Enki::Color(0.0, 0.0, 0.5)));
+    , Enki::Color(0.0, 0.0, 0.5)
+    , std::stod(cl_args.at("childSpeed"))));
 
   // Create a robot named parent with 0 degree angle
   if (_has_parent)
   {
-    _add_robot(new nevil::grandparent_robot(world_size_x / 2.0
-      , world_size_y / 2.0
+    _add_robot(new nevil::grandparent_robot(_world->w / 2.0
+      , _world->h / 2.0
       , 0
       , _has_parent
       , _has_grandparent
       , "parent"
-      , Enki::Color(0.0, 0.5, 0.0)));
+      , Enki::Color(0.0, 0.5, 0.0)
+      , std::stod(cl_args.at("parentSpeed"))));
   }
 
   // Create a robot named grandparent with 0 degree angle
   if (_has_grandparent)
   {
-    _add_robot(new nevil::grandparent_robot(world_size_x * (3 / 4.0)
-      , world_size_y / 2.0
+    _add_robot(new nevil::grandparent_robot(_world->w * (3 / 4.0)
+      , _world->h / 2.0
       , 0
       , _has_parent
       , _has_grandparent
       , "grandparent"
-      , Enki::Color(0.9, 0.0, 0.0)));
+      , Enki::Color(0.9, 0.0, 0.0)
+      , std::stod(cl_args.at("grandparentSpeed"))));
   }
 }
 

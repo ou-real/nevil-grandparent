@@ -4,20 +4,11 @@ nevil::grandparent_trial::grandparent_trial()
 {}
 
 nevil::grandparent_trial::grandparent_trial(const nevil::args &cl_args)
-{
-  const int WORLD_SIZE_X = 70;
-  const int WORLD_SIZE_Y = 50;
-
-  _population_size = std::stoi(cl_args.at("ps"));
-  float bracket_ratio = std::stof(cl_args.at("br"));
-  float mutation_rate = std::stof(cl_args.at("mr"));
-  bool has_grandparent = (cl_args.at("gp") == "true");
-  bool has_parent = (cl_args.at("pr") == "true");
-
-  _arena = nevil::grandparent_arena(WORLD_SIZE_X, WORLD_SIZE_Y, has_parent, has_grandparent);
-  _population = nevil::grandparent_population(_population_size, has_parent, has_grandparent, bracket_ratio, mutation_rate);
-  _current_index = 0;
-}
+  : _population_size(std::stoi(cl_args.at("ps")))
+  , _current_index(0)
+  , _arena(nevil::grandparent_arena(cl_args))
+  , _population(nevil::grandparent_population(cl_args))
+{}
 
 Enki::World *nevil::grandparent_trial::get_world() const
 {
